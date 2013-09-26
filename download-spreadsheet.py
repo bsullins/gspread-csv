@@ -14,8 +14,8 @@ def norm(s):
 username = config['USERNAME']
 password = config['PASSWORD']
 docs = [
-    {"doc": "GA Clicks for Snippets on Mozilla"},
-    {"doc":"Snippet Groups"}
+    {"doc": "My 1st Spreadsheet Name"},
+    {"doc":"My 2nd Spreadsheet Name"} 
     ]
 
 
