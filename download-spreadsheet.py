@@ -1,14 +1,9 @@
 import csv
 import gspread
 import urllib
+import codecs
 from config import config
 
-#functions
-def norm(s):
-    if type(s) == unicode:
-        return s.encode('utf-8').strip()
-    else:
-        return s
 
 #config
 username = config['USERNAME']
@@ -26,10 +21,18 @@ client = gspread.login(username, password)
 for doc in docs:
     spreadsheet = client.open(doc["doc"])
     for i, worksheet in enumerate(spreadsheet.worksheets()):
-        filename = doc["doc"] + '-worksheet' + str(i) + '.csv'
-        #filename = doc + '.csv'
+        filename = path + doc["doc"] + '-worksheet' + str(i) + '.csv'
         with open(filename, 'wb') as f:
             writer = csv.writer(f)
-            writer.writerows(worksheet.get_all_values())
+            content = worksheet.get_all_values()
+            for row in content:
+                new_row=[]
+                for record in row:
+                    record=record.encode('utf8')
+                    new_row.append(record)
+                try:
+                    writer.writerow(new_row)
+                except (UnicodeEncodeError, UnicodeDecodeError):
+                    print "Caught unicode error"
     print '== Finished Writing: ' + filename + ' =='
 print '====== FINISHED ======'
